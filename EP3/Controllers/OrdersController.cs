@@ -19,6 +19,12 @@ namespace EP3.Controllers
       return View();
     }
 
+    public IActionResult Details(int id)
+    {
+      var o = db.Orders.Find(id);
+      return View(o);
+    }
+
     [HttpGet("[controller]/Create/{customerId}")]
     public IActionResult Create(int customerId)
     {
@@ -30,7 +36,7 @@ namespace EP3.Controllers
     [HttpPost("[controller]/Create/{customerId}")]
     public async Task<IActionResult> CreateAsync(int customerId)
     {
-      var c = db.Customers.Find(customerId);
+      var c = await db.Customers.FindAsync(customerId);
       var o = new Order();
 
       //o.Customer = c;
@@ -38,7 +44,7 @@ namespace EP3.Controllers
 
       await db.SaveChangesAsync(); // implicitly transactional
 
-      return RedirectToAction(nameof(Index), "Customers");
+      return RedirectToAction(nameof(Details), new { o.Id });
     }
   }
 }

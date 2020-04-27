@@ -29,7 +29,9 @@ namespace EP3
 
       services.AddDbContext<AppDb>(options =>
       {
-        options.UseSqlServer(Configuration.GetConnectionString(nameof(AppDb)));
+        options
+          .UseLazyLoadingProxies()
+          .UseSqlServer(Configuration.GetConnectionString(nameof(AppDb)));
       });
     }
 
